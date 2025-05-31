@@ -5,10 +5,8 @@ class Mapa {
 
 public:
     Mapa(int alto, int ancho);
-    
+
     ~Mapa();
 
     void printMapa();
-
-    
 };

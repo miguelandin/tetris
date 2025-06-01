@@ -1,3 +1,4 @@
+
 class Mapa {
     char** display;
     int altura;
@@ -8,5 +9,11 @@ public:
 
     ~Mapa();
 
-    void printMapa();
+    void printMapa(char ** mapa);
+
+    int getMedio();
+    
+    char** getMapa();
+
+    void actualizarMapa(int **bloques);
 };

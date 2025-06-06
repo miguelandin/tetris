@@ -16,4 +16,10 @@ public:
     char** getMapa();
 
     void actualizarMapa(int **bloques);
+
+    void actualizarTodoMapa(char** mapa);
+
+    int getAltura();
+
+    int getAncura();
 };

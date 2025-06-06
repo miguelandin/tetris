@@ -38,6 +38,22 @@ char getch()
     return c;
 }
 
+char** copiarMapa(Mapa mapa)
+{
+    char** display = mapa.getMapa();
+    int altura = mapa.getAltura();
+    int anchura = mapa.getAncura();
+    char** copia = new char*[altura];
+
+    for (int i = 0; i < altura; i++) {
+        copia[i] = new char[anchura];
+        for (int j = 0; j < anchura; j++)
+            copia[i][j] = display[i][j];
+    }
+
+    return copia;
+}
+
 int* randomPieza()
 {
     std::random_device rd; // semilla aleatoria
@@ -85,11 +101,12 @@ int main()
     Mapa mapa(14, 10);
     bool partida = true;
     char input;
-    mapa.printMapa(); // muestra el mapa
+    mapa.printMapa(mapa.getMapa()); // muestra el mapa
     while (partida) {
-        int * coordenadas = randomPieza();
+        int* coordenadas = randomPieza();
         Pieza pieza(coordenadas, mapa.getMedio());
-        delete[] coordenadas; // liberar memoria de la pieza aleatoria despues de contruirla
+        delete[] coordenadas; // liberar memoria de la pieza aleatoria despues de
+                              // construirla
 
         bool colocado = false;
         while (!colocado) {
@@ -109,10 +126,11 @@ int main()
                 pieza.bajar();
                 break;
             }
-            mapa.actualizarMapa(
-                pieza.getCoordenadas()); // actualiza el estado del mapa
+            mapa.actualizarMapa(pieza.getCoordenadas()); // actualiza el estado del mapa
             clear();
-            mapa.printMapa(); // muestra el mapa
+            char** copia = copiarMapa(mapa);
+            mapa.printMapa(mapa.getMapa()); // muestra el mapa
+            mapa.actualizarTodoMapa(copia);
         }
     }
     return 0;

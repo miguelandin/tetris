@@ -37,7 +37,7 @@ void Pieza::bajar() {
 
 void Pieza::izquierda(){
     for(int i = 0; i < 4; i++)
-        bloques[i][0] -= 1;
+        bloques[i][1] -= 1;
 }
 
 void Pieza::derecha(){

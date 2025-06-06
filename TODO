@@ -1,0 +1,29 @@
+Clase Mapa
+    char ** mapa
+
+    Constructor(filas, columnas)
+    ActualizarMapa(Pieza piezaNueva, Pieza piezaAntigua)
+    printMapa()
+    LimpiarLinea()
+
+Clase Pieza
+    Constructor() // genera pieza aleatoria
+    GetCoordenada()
+    Rotar()
+    Izquierda()
+    Derecha()
+    Abajo()
+
+Main
+    Pieza * piezaNueva
+    Pieza * piezaAntigua
+    Mapa mapa(fila, columna)
+    while(partida)
+        piezaNueva = new Pieza()
+        piezaAntigua = nullptr
+        while(!colocada)
+            piezaAntigua = piezaNueva
+            piezaNueva.mover()
+            ActualizarMapa(piezaNueva, piezaAntigua)
+            PrintMapa()
+

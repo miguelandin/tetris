@@ -1,48 +1,72 @@
 #include "pieza.h"
 
-Pieza::Pieza(int *valores, int medio) {
-  bloques = new int *[4];
-  for (int i = 0; i < 4; i++) {
-    bloques[i] = new int[2];
-    bloques[i][1] = valores[i * 2] + medio; // X
-    bloques[i][0] = valores[i * 2 + 1];     // Y
-  }
+Pieza::Pieza(const int* pieza)
+{
+    this->pieza = new int[LEN];
+         
+    for (int i = 0; i < LEN / 2; i++) {
+        this->pieza[i * 2] = pieza[i * 2];
+        this->pieza[i * 2 + 1] = pieza[i * 2 + 1];
+    }
 }
 
-Pieza::~Pieza() {
-  for (int i = 0; i < 4; i++)
-    delete[] bloques[i];
-  delete bloques;
+Pieza::~Pieza()
+{
+    delete[] pieza;
+    pieza = nullptr;
 }
 
-void Pieza::girar() {
-  // se estable el eje de rotación siempre en el segundo bloque
-  int piboteX = bloques[1][0];
-  int piboteY = bloques[1][1];
-
-  for (int i = 0; i < 4; i++) {
-    int x = bloques[i][0] - piboteX;
-    int y = bloques[i][1] - piboteY;
-
-    // rotar 90º
-    bloques[i][0] = piboteX - y; // nueva x
-    bloques[i][1] = piboteY + x; // nueva y
-  }
+int* Pieza::getCoordenadas()
+{
+    return pieza;
 }
 
-void Pieza::bajar() {
-  for (int i = 0; i < 4; i++)
-    bloques[i][1] += 1; // se suma la altura en 1 (baja un bloque)
+void Pieza::rotar()
+{ // rotación en sentido horario
+    int x, y;
+
+    for (int i = 0; i < LEN / 2; i++) {
+        x = pieza[i * 2];
+        y = pieza[i * 2 + 1];
+
+        // nuevos valores rotados
+        pieza[i * 2] = y; // nueva x
+        pieza[i * 2 + 1] = -x; // nueva y
+    }
 }
 
-void Pieza::izquierda(){
-    for(int i = 0; i < 4; i++)
-        bloques[i][1] -= 1;
+void Pieza::moverIzquierda()
+{
+    for (int i = 0; i < LEN / 2; i++)
+        pieza[i * 2] -= 1; // resta 1 a las x (hacia la izquierda)
 }
 
-void Pieza::derecha(){
-    for(int i = 0; i < 4; i++)
-        bloques[i][0] += 1;
+void Pieza::moverDerecha()
+{
+    for (int i = 0; i < LEN / 2; i++)
+        pieza[i * 2] += 1; // suma 1 a las x (hacia la derecha)
+} // suma 1 a las y (hacia abajo)
+
+void Pieza::bajar()
+{
+    for (int i = 0; i < LEN / 2; i++)
+        pieza[i * 2 + 1] += 1; // suma 1 a las y (hacia abajo)
 }
 
-int **Pieza::getCoordenadas() { return bloques; } // devuelve las coordenadas de cada bloque
+void Pieza::mover(char imput)
+{
+    switch (imput) {
+    case 'A':
+        rotar();
+        break;
+    case 'D':
+        moverIzquierda();
+        break;
+    case 'B':
+        bajar();
+        break;
+    case 'C':
+        moverDerecha();
+        break;
+    }
+}

@@ -1,5 +1,4 @@
 #include "mapa.h"
-#include "pieza.h"
 #include <cstdlib>
 #include <random>
 #include <termios.h>
@@ -15,8 +14,10 @@ const int ELE2[TAM] = { 0, 0, 1, 0, 2, 0, 0, 1 };
 const int SKEW1[TAM] = { 0, 1, 1, 1, 1, 0, 2, 0 };
 const int SKEW2[TAM] = { 0, 0, 1, 1, 1, 0, 2, 1 };
 
+// función para limpiar la consola
 void clear() { system("clear"); }
 
+// función para leer imputs
 char getch()
 {
     struct termios oldt, newt;
@@ -38,100 +39,44 @@ char getch()
     return c;
 }
 
-char** copiarMapa(Mapa mapa)
-{
-    char** display = mapa.getMapa();
-    int altura = mapa.getAltura();
-    int anchura = mapa.getAncura();
-    char** copia = new char*[altura];
-
-    for (int i = 0; i < altura; i++) {
-        copia[i] = new char[anchura];
-        for (int j = 0; j < anchura; j++)
-            copia[i][j] = display[i][j];
-    }
-
-    return copia;
-}
-
-int* randomPieza()
-{
-    std::random_device rd; // semilla aleatoria
-    std::mt19937 gen(rd()); // algoritmo generador
-    std::uniform_int_distribution<> distrib(
-        1, 8); // genera un número aleatorio del 1 al 8
-    int* bloques = new int[TAM];
-
-    switch (int aleatorio = distrib(gen)) {
-    case 1:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = STRAIGHT[i];
-        break;
-    case 2:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = SQUARE[i];
-        break;
-    case 3:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = TE[i];
-        break;
-    case 4:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = ELE1[i];
-        break;
-    case 5:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = ELE2[i];
-        break;
-    case 6:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = SKEW1[i];
-        break;
-    case 7:
-        for (int i = 0; i < TAM; i++)
-            bloques[i] = SKEW2[i];
-        break;
-    }
-
-    return bloques;
+// genera una pieza aleatoria
+const int* randomPieza()
+{ // Return const int*
+    static const int* shapes[] = { STRAIGHT, SQUARE, TE, ELE1, ELE2, SKEW1, SKEW2 };
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distrib(0, 6);
+    return shapes[distrib(gen)];
 }
 
 int main()
 {
+    // variables
+    Pieza* piezaNueva = nullptr;
+    Pieza* piezaAntigua = nullptr;
     Mapa mapa(14, 10);
     bool partida = true;
-    char input;
-    mapa.printMapa(mapa.getMapa()); // muestra el mapa
+
+
+    mapa.printMapa();
+
     while (partida) {
-        int* coordenadas = randomPieza();
-        Pieza pieza(coordenadas, mapa.getMedio());
-        delete[] coordenadas; // liberar memoria de la pieza aleatoria despues de
-                              // construirla
+        piezaNueva = new Pieza(randomPieza());
 
-        bool colocado = false;
-        while (!colocado) {
-            input = getch(); // Llama a la función para leer un carácter
+        bool colocada = false;
 
-            switch (input) { // según el imput hace un acción con la pieza
-            case 'A':
-                pieza.girar();
-                break;
-            case 'B':
-                pieza.izquierda();
-                break;
-            case 'D':
-                pieza.derecha();
-                break;
-            case 'C':
-                pieza.bajar();
-                break;
-            }
-            mapa.actualizarMapa(pieza.getCoordenadas()); // actualiza el estado del mapa
+        while (!colocada) {
+            piezaAntigua = piezaNueva;
+            piezaNueva->mover(getch());
+            mapa.actualizarMapa(piezaNueva, piezaAntigua);
             clear();
-            char** copia = copiarMapa(mapa);
-            mapa.printMapa(mapa.getMapa()); // muestra el mapa
-            mapa.actualizarTodoMapa(copia);
+            mapa.printMapa();
         }
     }
-    return 0;
+
+    // liberar la memoria de los punteros
+    delete piezaNueva;
+    delete piezaAntigua;
+    piezaAntigua = nullptr;
+    piezaNueva = nullptr;
 }

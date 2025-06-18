@@ -1,25 +1,19 @@
+#include "pieza.h"
 
 class Mapa {
-    char** display;
-    int altura;
-    int anchura;
+    char** mapa;
+    int altura, anchura;
 
 public:
-    Mapa(int alto, int ancho);
+    Mapa(int filas, int columnas);
 
     ~Mapa();
 
-    void printMapa(char ** mapa);
+    void actualizarMapa(Pieza* piezaNueva, Pieza* piezaAntigua);
 
-    int getMedio();
-    
-    char** getMapa();
+    void printMapa();
 
-    void actualizarMapa(int **bloques);
+    int hayLineaCompleta();
 
-    void actualizarTodoMapa(char** mapa);
-
-    int getAltura();
-
-    int getAncura();
+    void limpiarLinea();
 };

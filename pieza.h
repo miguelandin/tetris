@@ -1,18 +1,22 @@
 class Pieza {
-    int** bloques;
+    int* pieza;
+
+    const int LEN = 8;
 
 public:
-    Pieza(int* valores, int medio);
+    Pieza(const int* pieza);
 
     ~Pieza();
 
-    void girar();
+    int* getCoordenadas();
+
+    void rotar();
+
+    void moverIzquierda();
+
+    void moverDerecha();
 
     void bajar();
 
-    void izquierda();
-
-    void derecha();
-
-    int **getCoordenadas();
+    void mover(char imput);
 };

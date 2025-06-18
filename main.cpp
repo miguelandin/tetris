@@ -57,7 +57,6 @@ int main()
     Mapa mapa(14, 10);
     bool partida = true;
 
-
     mapa.printMapa();
 
     while (partida) {
@@ -66,9 +65,11 @@ int main()
         bool colocada = false;
 
         while (!colocada) {
-            piezaAntigua = piezaNueva;
+            piezaAntigua = new Pieza(piezaNueva->getCoordenadas());
             piezaNueva->mover(getch());
             mapa.actualizarMapa(piezaNueva, piezaAntigua);
+            delete piezaAntigua;
+            piezaAntigua = nullptr;
             clear();
             mapa.printMapa();
         }

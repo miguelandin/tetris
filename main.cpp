@@ -55,24 +55,25 @@ int main()
     Pieza* piezaNueva = nullptr;
     Pieza* piezaAntigua = nullptr;
     Mapa mapa(14, 10);
-    bool partida = true;
+    bool fin = false;
 
     mapa.printMapa();
 
-    while (partida) {
-        piezaNueva = new Pieza(randomPieza());
-
+    while (!fin) {
+        piezaNueva = new Pieza(randomPieza(), mapa.getMedio());
+        fin = mapa.hayColision(piezaNueva); // si no hay espacio, termina
         bool colocada = false;
 
         while (!colocada) {
-            piezaAntigua = new Pieza(piezaNueva->getCoordenadas());
-            piezaNueva->mover(getch());
-            mapa.actualizarMapa(piezaNueva, piezaAntigua);
+            piezaAntigua = new Pieza(piezaNueva->getCoordenadas(), 0);
+            bool abajo = piezaNueva->mover(getch());
+            colocada = mapa.actualizarMapa(piezaNueva, piezaAntigua, abajo);
             delete piezaAntigua;
             piezaAntigua = nullptr;
             clear();
             mapa.printMapa();
         }
+        mapa.limpiarLinea();
     }
 
     // liberar la memoria de los punteros

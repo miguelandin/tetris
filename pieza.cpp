@@ -1,12 +1,12 @@
 #include "pieza.h"
 
-Pieza::Pieza(const int* pieza)
+Pieza::Pieza(const int* pieza, int medio)
 {
     this->pieza = new int[LEN];
 
     for (int i = 0; i < LEN / 2; i++) {
         this->pieza[i * 2] = pieza[i * 2];
-        this->pieza[i * 2 + 1] = pieza[i * 2 + 1];
+        this->pieza[i * 2 + 1] = pieza[i * 2 + 1] + medio;
     }
 }
 
@@ -55,20 +55,23 @@ void Pieza::bajar()
         pieza[i * 2] += 1; // suma 1 a las y (hacia abajo)
 }
 
-void Pieza::mover(char imput)
+bool Pieza::mover(char imput)
 {
     switch (imput) {
-    case 'A':
+    case 'w':
         rotar();
         break;
-    case 'D':
+    case 'a':
         moverIzquierda();
         break;
-    case 'B':
+    case 's':
         bajar();
+        return true; // si se mueve hacia abajo, devuelve true
         break;
-    case 'C':
+    case 'd':
         moverDerecha();
         break;
     }
+
+    return false;
 }

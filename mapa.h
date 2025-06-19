@@ -1,19 +1,26 @@
 #include "pieza.h"
+#include <cstdlib>
+#include <termios.h>
+#include <unistd.h>
 
 class Mapa {
     char** mapa;
-    int altura, anchura;
+    int altura, anchura, medio;
 
 public:
     Mapa(int filas, int columnas);
 
     ~Mapa();
 
-    void actualizarMapa(Pieza* piezaNueva, Pieza* piezaAntigua);
+    bool actualizarMapa(Pieza* piezaNueva, Pieza* piezaAntigua, bool abajo);
 
     void printMapa();
 
     int hayLineaCompleta();
 
     void limpiarLinea();
+
+    bool hayColision(Pieza* piezaNueva);
+
+    int getMedio();
 };

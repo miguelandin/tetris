@@ -4,7 +4,7 @@ class Pieza {
     const int LEN = 8;
 
 public:
-    Pieza(const int* pieza);
+    Pieza(const int* pieza, int medio);
 
     ~Pieza();
 
@@ -18,5 +18,5 @@ public:
 
     void bajar();
 
-    void mover(char imput);
+    bool mover(char imput);
 };

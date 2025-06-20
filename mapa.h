@@ -14,11 +14,11 @@ public:
 
     bool actualizarMapa(Pieza* piezaNueva, Pieza* piezaAntigua, bool abajo);
 
-    void printMapa();
+    void printMapa(int puntuacion);
 
     int hayLineaCompleta();
 
-    void limpiarLinea();
+    int limpiarLinea();
 
     bool hayColision(Pieza* piezaNueva);
 

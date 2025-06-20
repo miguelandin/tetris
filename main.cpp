@@ -56,8 +56,9 @@ int main()
     Pieza* piezaAntigua = nullptr;
     Mapa mapa(14, 10);
     bool fin = false;
+    int puntuacion = 0;
 
-    mapa.printMapa();
+    mapa.printMapa(puntuacion);
 
     while (!fin) {
         piezaNueva = new Pieza(randomPieza(), mapa.getMedio());
@@ -71,9 +72,9 @@ int main()
             delete piezaAntigua;
             piezaAntigua = nullptr;
             clear();
-            mapa.printMapa();
+            mapa.printMapa(puntuacion);
         }
-        mapa.limpiarLinea();
+        puntuacion += mapa.limpiarLinea();
     }
 
     // liberar la memoria de los punteros
@@ -81,4 +82,6 @@ int main()
     delete piezaAntigua;
     piezaAntigua = nullptr;
     piezaNueva = nullptr;
+
+    return 0;
 }

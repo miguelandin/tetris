@@ -57,13 +57,14 @@ bool Mapa::actualizarMapa(Pieza* piezaNueva, Pieza* piezaAntigua, bool abajo)
     return false;
 }
 
-void Mapa::printMapa()
+void Mapa::printMapa(int puntuacion)
 {
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < anchura; j++)
             std::cout << mapa[i][j];
         std::cout << std::endl;
     }
+    std::cout << "SCORE: " << puntuacion;
 }
 
 int Mapa::hayLineaCompleta()
@@ -84,11 +85,14 @@ int Mapa::hayLineaCompleta()
     return -1;
 }
 
-void Mapa::limpiarLinea()
+int Mapa::limpiarLinea()
 {
     int fila = hayLineaCompleta();
+    int puntuacion = 0;
 
     while (fila != -1) {
+        puntuacion += 1;
+        puntuacion *= puntuacion;
         for (int i = fila; i > 0; i--) {
             for (int j = 0; j < anchura; j++)
                 mapa[i][j] = mapa[i - 1][j];
@@ -99,6 +103,8 @@ void Mapa::limpiarLinea()
 
         fila = hayLineaCompleta();
     }
+
+    return puntuacion;
 }
 
 bool Mapa::hayColision(Pieza* piezaNueva)
